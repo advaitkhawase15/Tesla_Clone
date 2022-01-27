@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import MenuIcon from '@material-ui/icons/Menu';
-import CloseIcon from '@material-ui/icons/Close';
 import { selectCars } from '../features/car/carSlice'
 import { useSelector } from 'react-redux';
+import Hamburger from 'hamburger-react'
 
 function Header() {
     const [burgerStatus, setBurgerStatus] = useState(false);
+    const [isOpen, setOpen] = useState(false)
 
     const cars = useSelector(selectCars)
 
@@ -23,12 +23,12 @@ function Header() {
             <RightMenu>
                 <a href='#'>Shop</a>
                 <a href='#'>Tesla Account</a>
-                <CustomMenu onClick={() => setBurgerStatus(true)} />
+                <BurgerMenu>
+                    <Hamburger size={20} direction="right" toggled={burgerStatus} toggle={setBurgerStatus} />
+                </BurgerMenu>
             </RightMenu>
             <BurgerNav show={burgerStatus}>
-                <CloseWrapper>
-                    <CustomClose onClick={() => setBurgerStatus(false)} />
-                </CloseWrapper>
+                <li style={{"border":"none"}}></li>
                 {cars && cars.map((car, index) =>
                     <li><a key={index} href='#'>{car}</a></li>
                 )}
@@ -81,8 +81,8 @@ const RightMenu = styled.div`
     }
 `
 
-const CustomMenu = styled(MenuIcon)`
-    cursor: pointer;
+const BurgerMenu = styled.div`
+    z-index: 3;
 `
 
 const BurgerNav = styled.div`
@@ -107,12 +107,4 @@ const BurgerNav = styled.div`
             font-weight: 600;
         } 
     }
-`
-const CustomClose = styled(CloseIcon)`
-    cursor: pointer;
-`
-
-const CloseWrapper = styled.div`
-    display: flex;
-    justify-content: flex-end;
 `
